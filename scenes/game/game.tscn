@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://ec1jxnm08e6q"]
+
+[ext_resource type="Texture2D" uid="uid://c1xfyijrx00ya" path="res://assets/background/rocks_2.png" id="1_1066x"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_ssk61"]
+[ext_resource type="PackedScene" uid="uid://d4kecsbtvklu2" path="res://scenes/plane/plane.tscn" id="2_ev524"]
+[ext_resource type="PackedScene" uid="uid://dgljauw86f0lj" path="res://scenes/barrier/barrier.tscn" id="3_de6a2"]
+[ext_resource type="PackedScene" uid="uid://i0dyj8uqv2ky" path="res://scenes/scrolling_background/scrolling_background.tscn" id="4_2u4ug"]
+[ext_resource type="PackedScene" uid="uid://d3ajx35xk2vns" path="res://scenes/pipes/pipes.tscn" id="4_wimsi"]
+[ext_resource type="PackedScene" uid="uid://dugbtinx40d0u" path="res://scenes/hud/hud.tscn" id="6_qiwuu"]
+[ext_resource type="PackedScene" uid="uid://c6lbq358ecbm5" path="res://scenes/game_over/game_over.tscn" id="7_lv2se"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_ssk61")
+pipes_scene = ExtResource("4_wimsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(266, 378)
+texture = ExtResource("1_1066x")
+
+[node name="ScrollingBackground" parent="Sprite2D" instance=ExtResource("4_2u4ug")]
+
+[node name="Plane" parent="." instance=ExtResource("2_ev524")]
+position = Vector2(82, 440)
+
+[node name="Ceiling" parent="." instance=ExtResource("3_de6a2")]
+position = Vector2(0, -22)
+
+[node name="Floor" parent="." instance=ExtResource("3_de6a2")]
+position = Vector2(0, 861)
+
+[node name="PipesHolder" type="Node" parent="."]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="SpawnU" type="Marker2D" parent="."]
+position = Vector2(530, 340)
+
+[node name="SpawnL" type="Marker2D" parent="."]
+position = Vector2(530, 540)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hud" parent="CanvasLayer" instance=ExtResource("6_qiwuu")]
+
+[node name="GameOver" parent="CanvasLayer" instance=ExtResource("7_lv2se")]
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
